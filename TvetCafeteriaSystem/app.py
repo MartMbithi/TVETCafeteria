@@ -54,11 +54,11 @@ class Pharmacy(db.Model):
     pharmacy_name = db.Column(db.String(100))
 
 # Product Model
-class Product(db.Model):
+class Products(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.String(100))
     product_name = db.Column(db.String(100))
-    name = db.Column(db.String(100))
+    product_name = db.Column(db.String(100))
     price = db.Column(db.Float)
     category = db.Column(db.String(100))
 
@@ -454,12 +454,11 @@ def create_product():
     product_id = data.get('product_id')
     location_id = data.get('location_id')
     product_name = data.get('product_name')
-    name = data.get('name')
     price = data.get('price')
     category = data.get('category')
 
-    product = Product(product_id=product_id, location_id=location_id, product_name=product_name, name=name, price=price, category=category)
-    db.session.add(product)
+    products = Products(product_id=product_id, location_id=location_id,  product_name=product_name, price=price, category=category)
+    db.session.add(products)
     db.session.commit()
 
     return jsonify({'message': 'Product created successfully!'}), 201
@@ -468,13 +467,12 @@ def create_product():
 @app.route('/api/products', methods=['GET'])
 @jwt_required()
 def get_products():
-    products = Product.query.all()
+    products = Products.query.all()
     results = [
         {
             "product_id": product.product_id,
             "location_id": product.location_id,
             "product_name": product.product_name,
-            "name": product.name,
             "price": product.price,
             "category": product.category
         } for product in products]
@@ -487,11 +485,10 @@ def get_products():
 @jwt_required()
 def update_product(product_id):
     data = request.json
-    product = Product.query.get_or_404(product_id)
+    product = Products.query.get_or_404(product_id)
 
     product.location_id = data.get('location_id')
     product.product_name = data.get('product_name')
-    product.name = data.get('name')
     product.price = data.get('price')
     product.category = data.get('category')
 
@@ -503,7 +500,7 @@ def update_product(product_id):
 @app.route('/api/products/<int:product_id>', methods=['DELETE'])
 @jwt_required()
 def delete_product(product_id):
-    product = Product.query.get_or_404(product_id)
+    product = Products.query.get_or_404(product_id)
     db.session.delete(product)
     db.session.commit()
 
