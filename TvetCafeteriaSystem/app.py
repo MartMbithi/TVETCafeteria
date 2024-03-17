@@ -668,17 +668,7 @@ def get_total_products():
     return jsonify({'total_products': total_products}), 200
 
 #Get Top Selling Products
-@app.route('/api/top_selling_products', methods=['GET'])    
-def get_top_selling_products():
-    products = Products.query.all()
-    top_selling_products = [
-        {
-            "product_name": product.product_name,
-            "price": product.price,
-            "category": product.category
-        } for product in products]
 
-    return jsonify(top_selling_products), 200
 
 
 if __name__ == '__main__':
