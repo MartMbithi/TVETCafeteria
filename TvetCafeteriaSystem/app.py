@@ -640,8 +640,23 @@ def delete_order(order_id):
 #Landing Page Analytics
 
 #Get Total Sales
+@app.route('/api/sales', methods=['GET'])
+@jwt_required()
+def get_total_sales():
+    orders = Orders.query.all()
+    total_sales = sum(order.total for order in orders)
+
+    return jsonify({'total_sales': total_sales}), 200
 
 #Get Total Orders
+@app.route('/api/all_orders', methods=['GET'])
+@jwt_required()
+def get_total_orders():
+    orders = Orders.query.all()
+    total_orders = len(orders)
+
+    return jsonify({'total_orders': total_orders}), 200
+
 
 #Get Total Users
 
