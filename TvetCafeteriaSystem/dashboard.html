@@ -46,12 +46,6 @@
                 <h2>Total Orders</h2>
                 <p>Loading...</p>
             </div>
-            <div class="grid-item" id="topSellingProductsCard">
-                <h2>Total Products</h2>
-                <ul>
-                    <li>Loading...</li>
-                </ul>
-            </div>
             <div class="grid-item" id="revenueCard">
                 <h2>Revenue</h2>
                 <p>Loading...</p>
@@ -63,29 +57,22 @@
         // Fetch data from Flask API and update dashboard cards
         async function fetchDataAndUpdateDashboard() {
             try {
+                //Allow all origins
+                
                 // Fetch total orders
-                const totalOrdersResponse = await fetch('http://127.0.0.1:5000/api/total_orders');
+                const totalOrdersResponse = await fetch('http://127.0.0.1:5000/api/all_orders');
                 const totalOrdersData = await totalOrdersResponse.json();
                 document.getElementById('totalOrdersCard').innerHTML = `
                     <h2>Total Orders</h2>
                     <p>${totalOrdersData.total_orders}</p>
                 `;
-
-                // Fetch top selling products
-                const topSellingProductsResponse = await fetch('http://127.0.0.1:5000/api/top_selling_products');
-                const topSellingProductsData = await topSellingProductsResponse.json();
-                const topSellingProductsList = topSellingProductsData.top_selling_products.map(product => `<li>${product.product_name} - ${product.total_orders} orders</li>`).join('');
-                document.getElementById('topSellingProductsCard').innerHTML = `
-                    <h2>Top Selling Products</h2>
-                    <ul>${topSellingProductsList}</ul>
-                `;
-
+               
                 // Fetch revenue
-                const revenueResponse = await fetch('http://127.0.0.1:5000/api/revenue');
+                const revenueResponse = await fetch('http://127.0.0.1:5000/api/sales');
                 const revenueData = await revenueResponse.json();
                 document.getElementById('revenueCard').innerHTML = `
                     <h2>Revenue</h2>
-                    <p>$${revenueData.revenue}</p>
+                    <p>$${revenueData.total_sales}</p>
                 `;
             } catch (error) {
                 console.error('Error fetching data:', error);
