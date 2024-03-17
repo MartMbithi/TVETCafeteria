@@ -266,12 +266,62 @@ def delete_bookshop(bookshop_id):
 #Cafeteria CRUD Operations
 
 #Add Cafeteria
+@app.route('/api/cafeterias', methods=['POST'])
+@jwt_required()
+def create_cafeteria():
+    data = request.json
+    cafeteria_id = data.get('cafeteria_id')
+    location_id = data.get('location_id')
+    cafeteria_name = data.get('cafeteria_name')
+
+    cafeteria = Cafeteria(cafeteria_id=cafeteria_id, location_id=location_id, cafeteria_name=cafeteria_name)
+    db.session.add(cafeteria)
+    db.session.commit()
+
+    return jsonify({'message': 'Cafeteria created successfully!'}), 201
+
 
 #Get List Of Cafeterias
+@app.route('/api/cafeterias', methods=['GET'])
+@jwt_required()
+def get_cafeterias():
+    cafeterias = Cafeteria.query.all()
+    results = [
+        {
+            "cafeteria_id": cafeteria.cafeteria_id,
+            "location_id": cafeteria.location_id,
+            "cafeteria_name": cafeteria.cafeteria_name
+        } for cafeteria in cafeterias]
+
+    return jsonify(results), 200
+
 
 #Update Cafeteria
+@app.route('/api/cafeterias/<int:cafeteria_id>', methods=['PUT'])
+@jwt_required()
+def update_cafeteria(cafeteria_id):
+    data = request.json
+    cafeteria = Cafeteria.query.get_or_404(cafeteria_id)
+
+    cafeteria.location_id = data.get('location_id')
+    cafeteria.cafeteria_name = data.get('cafeteria_name')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Cafeteria updated successfully!'}), 200
+
+
 
 #Delete Cafeteria
+@app.route('/api/cafeterias/<int:cafeteria_id>', methods=['DELETE'])
+@jwt_required()
+def delete_cafeteria(cafeteria_id):
+    cafeteria = Cafeteria.query.get_or_404(cafeteria_id)
+    db.session.delete(cafeteria)
+    db.session.commit()
+
+    return jsonify({'message': 'Cafeteria deleted successfully!'}), 200
+
 
 
 #Digital Center CRUD Operations
