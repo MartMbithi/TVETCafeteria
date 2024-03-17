@@ -166,7 +166,6 @@ def create_location():
     return jsonify({'message': 'Location created successfully!'}), 201
 
 #Get all locations
-@app.route('/api/locations', methods=['GET'])
 
 
 
