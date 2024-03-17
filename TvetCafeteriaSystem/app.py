@@ -500,6 +500,15 @@ def update_product(product_id):
     return jsonify({'message': 'Product updated successfully!'}), 200
 
 #Delete Product
+@app.route('/api/products/<int:product_id>', methods=['DELETE'])
+@jwt_required()
+def delete_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    db.session.delete(product)
+    db.session.commit()
+
+    return jsonify({'message': 'Product deleted successfully!'}), 200
+
 
 
 #Tuck Shop CRUD Operations
