@@ -46,12 +46,34 @@ class Orders(db.Model):
     quantity = db.Column(db.Integer)
     total = db.Column(db.Float)
     order_date = db.Column(db.DateTime)
-    
-# Pharmacy Model
-# Product Model
-# Tuck_shop Model
-# Users Model
 
+# Pharmacy Model
+class Pharmacy(db.Model):
+    pharmacy_id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.String(100))
+    pharmacy_name = db.Column(db.String(100))
+
+# Product Model
+class Product(db.Model):
+    product_id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.String(100))
+    product_name = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+    price = db.Column(db.Float)
+    category = db.Column(db.String(100))
+
+# Tuck_shop Model
+class Tuck_shop(db.Model):
+    tuck_shop_id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.String(100))
+    tuck_shop_name = db.Column(db.String(100))
+
+# Users Model
+class Users(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+    role = db.Column(db.String(100))
 
 # Routes
 @app.route('/api/login', methods=['POST'])
@@ -77,7 +99,6 @@ def get_products():
     result = [{'id': product.id, 'name': product.name, 'price': str(product.price), 'category': product.category} for product in products]
     return jsonify(result), 200
 
-# Add other CRUD endpoints for users, products, and orders
 
 if __name__ == '__main__':
     app.run(debug=True)
