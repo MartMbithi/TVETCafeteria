@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from datetime import timedelta
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:taylorgang@localhost/TvetCafeteria'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:taylorgang@localhost/TvetCafeteria'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'TVETCafeteriaAPP'  # Change this to a random long string
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
@@ -13,8 +13,8 @@ db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
 # Database models
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Users(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(50), nullable=False)
@@ -38,9 +38,9 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    user = User.query.filter_by(username=username, password=password).first()
+    user = Users.query.filter_by(username=username, password=password).first()
     if user:
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=user.user_id)
         return jsonify({'access_token': access_token}), 200
     else:
         return jsonify({'message': 'Invalid username or password'}), 401
