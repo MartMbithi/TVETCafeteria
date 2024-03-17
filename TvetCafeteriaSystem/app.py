@@ -387,12 +387,61 @@ def delete_digital_center(digital_center_id):
 #Pharmacy CRUD Operations
 
 #Add Pharmacy
+@app.route('/api/pharmacies', methods=['POST'])
+@jwt_required()
+def create_pharmacy():
+    data = request.json
+    pharmacy_id = data.get('pharmacy_id')
+    location_id = data.get('location_id')
+    pharmacy_name = data.get('pharmacy_name')
+
+    pharmacy = Pharmacy(pharmacy_id=pharmacy_id, location_id=location_id, pharmacy_name=pharmacy_name)
+    db.session.add(pharmacy)
+    db.session.commit()
+
+    return jsonify({'message': 'Pharmacy created successfully!'}), 201
+
 
 #Get List Of Pharmacies
+@app.route('/api/pharmacies', methods=['GET'])
+@jwt_required()
+def get_pharmacies():
+    pharmacies = Pharmacy.query.all()
+    results = [
+        {
+            "pharmacy_id": pharmacy.pharmacy_id,
+            "location_id": pharmacy.location_id,
+            "pharmacy_name": pharmacy.pharmacy_name
+        } for pharmacy in pharmacies]
+
+    return jsonify(results), 200
+
 
 #Update Pharmacy
+@app.route('/api/pharmacies/<int:pharmacy_id>', methods=['PUT'])
+@jwt_required()
+def update_pharmacy(pharmacy_id):
+    data = request.json
+    pharmacy = Pharmacy.query.get_or_404(pharmacy_id)
+
+    pharmacy.location_id = data.get('location_id')
+    pharmacy.pharmacy_name = data.get('pharmacy_name')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Pharmacy updated successfully!'}), 200
+
 
 #Delete Pharmacy
+@app.route('/api/pharmacies/<int:pharmacy_id>', methods=['DELETE'])
+@jwt_required()
+def delete_pharmacy(pharmacy_id):
+    pharmacy = Pharmacy.query.get_or_404(pharmacy_id)
+    db.session.delete(pharmacy)
+    db.session.commit()
+
+    return jsonify({'message': 'Pharmacy deleted successfully!'}), 200
+
 
 
 #Product CRUD Operations
