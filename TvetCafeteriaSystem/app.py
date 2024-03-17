@@ -120,7 +120,6 @@ def get_users():
         {
             "user_id": user.user_id,
             "username": user.username,
-            "password": user.password,
             "role": user.role
         } for user in users]
 
@@ -166,7 +165,37 @@ def create_location():
     return jsonify({'message': 'Location created successfully!'}), 201
 
 #Get all locations
+@app.route('/api/locations', methods=['GET'])
+def get_locations():
+    locations = Locations.query.all()
+    results = [
+        {
+            "location_id": location.location_id,
+            "location_name": location.location_name
+        } for location in locations]
 
+    return jsonify(results), 200
+
+#Update Location Detail
+@app.route('/api/locations/<int:location_id>', methods=['PUT'])
+def update_location(location_id):
+    data = request.json
+    location = Locations.query.get_or_404(location_id)
+
+    location.location_name = data.get('location_name')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Location updated successfully!'}), 200
+
+#Delete Location
+@app.route('/api/locations/<int:location_id>', methods=['DELETE'])
+def delete_location(location_id):
+    location = Locations.query.get_or_404(location_id)
+    db.session.delete(location)
+    db.session.commit()
+
+    return jsonify({'message': 'Location deleted successfully!'}), 200
 
 
 if __name__ == '__main__':
