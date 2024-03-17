@@ -50,6 +50,10 @@
                 <h2>Revenue</h2>
                 <p>Loading...</p>
             </div>
+            <div class="grid-item" id="totalProductsCard">
+                <h2>Revenue</h2>
+                <p>Loading...</p>
+            </div>
         </div>
     </div>
 
@@ -72,7 +76,15 @@
                 const revenueData = await revenueResponse.json();
                 document.getElementById('revenueCard').innerHTML = `
                     <h2>Revenue</h2>
-                    <p>$${revenueData.total_sales}</p>
+                    <p>Ksh ${revenueData.total_sales}</p>
+                `;
+
+                //Fetch products
+                const totalProductsResponse = await fetch('http://127.0.0.1:5000/api/total_products');
+                const totalProductsData = await totalProductsResponse.json();
+                document.getElementById('totalProductsCard').innerHTML = `
+                    <h2>Total Products</h2>
+                    <p>${totalProductsData.total_products}</p>
                 `;
             } catch (error) {
                 console.error('Error fetching data:', error);
