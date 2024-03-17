@@ -639,7 +639,7 @@ def delete_order(order_id):
 
 #Landing Page Analytics
 
-#Get Total Sales
+#Get Total Revenue
 @app.route('/api/sales', methods=['GET'])
 @jwt_required()
 def get_total_sales():
@@ -658,9 +658,14 @@ def get_total_orders():
     return jsonify({'total_orders': total_orders}), 200
 
 
-#Get Total Users
-
 #Get Total Products
+@app.route('/api/total_products', methods=['GET'])
+@jwt_required()
+def get_total_products():
+    products = Products.query.all()
+    total_products = len(products)
+
+    return jsonify({'total_products': total_products}), 200
 
 
 
