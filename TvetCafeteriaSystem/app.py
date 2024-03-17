@@ -511,12 +511,61 @@ def delete_product(product_id):
 #Tuck Shop CRUD Operations
 
 #Add Tuck Shop
+@app.route('/api/tuck_shops', methods=['POST'])
+@jwt_required()
+def create_tuck_shop():
+    data = request.json
+    tuck_shop_id = data.get('tuck_shop_id')
+    location_id = data.get('location_id')
+    tuck_shop_name = data.get('tuck_shop_name')
+
+    tuck_shop = Tuck_shop(tuck_shop_id=tuck_shop_id, location_id=location_id, tuck_shop_name=tuck_shop_name)
+    db.session.add(tuck_shop)
+    db.session.commit()
+
+    return jsonify({'message': 'Tuck Shop created successfully!'}), 201
+
 
 #Get List Of Tuck Shops
+@app.route('/api/tuck_shops', methods=['GET'])
+@jwt_required()
+def get_tuck_shops():
+    tuck_shops = Tuck_shop.query.all()
+    results = [
+        {
+            "tuck_shop_id": tuck_shop.tuck_shop_id,
+            "location_id": tuck_shop.location_id,
+            "tuck_shop_name": tuck_shop.tuck_shop_name
+        } for tuck_shop in tuck_shops]
+
+    return jsonify(results), 200
+
+
 
 #Update Tuck Shop
+@app.route('/api/tuck_shops/<int:tuck_shop_id>', methods=['PUT'])
+@jwt_required()
+def update_tuck_shop(tuck_shop_id):
+    data = request.json
+    tuck_shop = Tuck_shop.query.get_or_404(tuck_shop_id)
+
+    tuck_shop.location_id = data.get('location_id')
+    tuck_shop.tuck_shop_name = data.get('tuck_shop_name')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Tuck Shop updated successfully!'}), 200
+
 
 #Delete Tuck Shop
+@app.route('/api/tuck_shops/<int:tuck_shop_id>', methods=['DELETE'])
+@jwt_required()
+def delete_tuck_shop(tuck_shop_id):
+    tuck_shop = Tuck_shop.query.get_or_404(tuck_shop_id)
+    db.session.delete(tuck_shop)
+    db.session.commit()
+
+    return jsonify({'message': 'Tuck Shop deleted successfully!'}), 200
 
 
 #Orders CRUD Operations
