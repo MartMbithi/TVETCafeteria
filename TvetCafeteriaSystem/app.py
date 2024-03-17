@@ -590,8 +590,40 @@ def create_order():
 
 
 #Get List Of Orders
+@app.route('/api/orders', methods=['GET'])
+@jwt_required()
+def get_orders():
+    orders = Orders.query.all()
+    results = [
+        {
+            "order_id": order.order_id,
+            "user_id": order.user_id,
+            "product_id": order.product_id,
+            "quantity": order.quantity,
+            "total": order.total,
+            "order_date": order.order_date
+        } for order in orders]
+
+    return jsonify(results), 200
+
 
 #Update Order
+@app.route('/api/orders/<int:order_id>', methods=['PUT'])
+@jwt_required()
+def update_order(order_id):
+    data = request.json
+    order = Orders.query.get_or_404(order_id)
+
+    order.user_id = data.get('user_id')
+    order.product_id = data.get('product_id')
+    order.quantity = data.get('quantity')
+    order.total = data.get('total')
+    order.order_date = data.get('order_date')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Order updated successfully!'}), 200
+
 
 #Delete Order
 
