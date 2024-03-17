@@ -409,7 +409,7 @@ def get_pharmacies():
     pharmacies = Pharmacy.query.all()
     results = [
         {
-            "pharmacy_id": pharmacy.pharmacy_id,
+            "pharmacies": pharmacy.pharmacy_id,
             "location_id": pharmacy.location_id,
             "pharmacy_name": pharmacy.pharmacy_name
         } for pharmacy in pharmacies]
@@ -447,6 +447,22 @@ def delete_pharmacy(pharmacy_id):
 #Product CRUD Operations
 
 #Add Product
+@app.route('/api/products', methods=['POST'])
+@jwt_required()
+def create_product():
+    data = request.json
+    product_id = data.get('product_id')
+    location_id = data.get('location_id')
+    product_name = data.get('product_name')
+    name = data.get('name')
+    price = data.get('price')
+    category = data.get('category')
+
+    product = Product(product_id=product_id, location_id=location_id, product_name=product_name, name=name, price=price, category=category)
+    db.session.add(product)
+    db.session.commit()
+
+    return jsonify({'message': 'Product created successfully!'}), 201
 
 #Get List Of Products
 
