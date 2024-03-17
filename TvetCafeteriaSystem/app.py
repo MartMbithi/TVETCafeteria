@@ -204,5 +204,97 @@ def delete_location(location_id):
     return jsonify({'message': 'Location deleted successfully!'}), 200
 
 
+#Bookshop CRUD Operations
+
+#Add Bookshop
+
+#Get List Of Bookshops
+
+#Update Bookshop
+
+#Delete Bookshop
+
+
+
+
+#Cafeteria CRUD Operations
+
+#Add Cafeteria
+
+#Get List Of Cafeterias
+
+#Update Cafeteria
+
+#Delete Cafeteria
+
+
+#Digital Center CRUD Operations
+
+#Add Digital Center
+
+
+#Get List Of Digital Centers
+
+#Update Digital Center
+
+#Delete Digital Center
+
+
+#Pharmacy CRUD Operations
+
+#Add Pharmacy
+
+#Get List Of Pharmacies
+
+#Update Pharmacy
+
+#Delete Pharmacy
+
+
+#Product CRUD Operations
+
+#Add Product
+
+#Get List Of Products
+
+#Update Product
+
+
+#Delete Product
+
+
+#Tuck Shop CRUD Operations
+
+#Add Tuck Shop
+
+#Get List Of Tuck Shops
+
+#Update Tuck Shop
+
+#Delete Tuck Shop
+
+
+#Orders CRUD Operations
+
+#Add Order
+
+#Get List Of Orders
+
+#Update Order
+
+#Delete Order
+
+#Landing Page Analytics
+
+#Get Total Sales
+
+#Get Total Orders
+
+#Get Total Users
+
+#Get Total Products
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
