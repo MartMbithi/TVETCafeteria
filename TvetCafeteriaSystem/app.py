@@ -76,6 +76,22 @@ class Users(db.Model):
     role = db.Column(db.String(100))
 
 # Routes
+
+#Register a user  
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    role = data.get('role')
+
+    user = Users(username=username, password=password, role=role)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully!'}), 201
+
+#Login a user
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.json
