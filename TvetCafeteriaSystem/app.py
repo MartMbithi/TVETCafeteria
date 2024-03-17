@@ -77,6 +77,8 @@ class Users(db.Model):
 
 # Routes
 
+# CRUD Operations for Users
+    
 #Register a user  
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -123,6 +125,48 @@ def get_users():
         } for user in users]
 
     return jsonify(results), 200
+
+#Update User Detail
+@app.route('/api/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    data = request.json
+    user = Users.query.get_or_404(user_id)
+
+    user.username = data.get('username')
+    user.password = data.get('password')
+    user.role = data.get('role')
+
+    db.session.commit()
+
+    return jsonify({'message': 'User updated successfully!'}), 200
+
+
+#Delete User
+@app.route('/api/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = Users.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'message': 'User deleted successfully!'}), 200
+
+#CRUD Operations for Locations
+
+#Create Locations
+@app.route('/api/locations', methods=['POST'])
+def create_location():
+    data = request.json
+    location_id = data.get('location_id')
+    location_name = data.get('location_name')
+
+    location = Locations(location_id=location_id, location_name=location_name)
+    db.session.add(location)
+    db.session.commit()
+
+    return jsonify({'message': 'Location created successfully!'}), 201
+
+#Get all locations
+@app.route('/api/locations', methods=['GET'])
 
 
 
