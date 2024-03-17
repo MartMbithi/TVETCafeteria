@@ -571,6 +571,23 @@ def delete_tuck_shop(tuck_shop_id):
 #Orders CRUD Operations
 
 #Add Order
+@app.route('/api/orders', methods=['POST'])
+@jwt_required()
+def create_order():
+    data = request.json
+    order_id = data.get('order_id')
+    user_id = data.get('user_id')
+    product_id = data.get('product_id')
+    quantity = data.get('quantity')
+    total = data.get('total')
+    order_date = data.get('order_date')
+
+    order = Orders(order_id=order_id, user_id=user_id, product_id=product_id, quantity=quantity, total=total, order_date=order_date)
+    db.session.add(order)
+    db.session.commit()
+
+    return jsonify({'message': 'Order created successfully!'}), 201
+
 
 #Get List Of Orders
 
