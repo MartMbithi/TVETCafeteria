@@ -127,6 +127,7 @@ def get_users():
 
 #Update User Detail
 @app.route('/api/users/<int:user_id>', methods=['PUT'])
+@jwt_required()
 def update_user(user_id):
     data = request.json
     user = Users.query.get_or_404(user_id)
@@ -142,6 +143,7 @@ def update_user(user_id):
 
 #Delete User
 @app.route('/api/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
 def delete_user(user_id):
     user = Users.query.get_or_404(user_id)
     db.session.delete(user)
@@ -153,6 +155,7 @@ def delete_user(user_id):
 
 #Create Locations
 @app.route('/api/locations', methods=['POST'])
+@jwt_required()
 def create_location():
     data = request.json
     location_id = data.get('location_id')
@@ -166,6 +169,7 @@ def create_location():
 
 #Get all locations
 @app.route('/api/locations', methods=['GET'])
+@jwt_required()
 def get_locations():
     locations = Locations.query.all()
     results = [
@@ -178,6 +182,7 @@ def get_locations():
 
 #Update Location Detail
 @app.route('/api/locations/<int:location_id>', methods=['PUT'])
+@jwt_required()
 def update_location(location_id):
     data = request.json
     location = Locations.query.get_or_404(location_id)
@@ -190,6 +195,7 @@ def update_location(location_id):
 
 #Delete Location
 @app.route('/api/locations/<int:location_id>', methods=['DELETE'])
+@jwt_required()
 def delete_location(location_id):
     location = Locations.query.get_or_404(location_id)
     db.session.delete(location)
