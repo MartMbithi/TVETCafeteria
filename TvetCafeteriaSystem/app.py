@@ -641,7 +641,6 @@ def delete_order(order_id):
 
 #Get Total Revenue
 @app.route('/api/sales', methods=['GET'])
-@jwt_required()
 def get_total_sales():
     orders = Orders.query.all()
     total_sales = sum(order.total for order in orders)
@@ -650,7 +649,6 @@ def get_total_sales():
 
 #Get Total Orders
 @app.route('/api/all_orders', methods=['GET'])
-@jwt_required()
 def get_total_orders():
     orders = Orders.query.all()
     total_orders = len(orders)
@@ -660,13 +658,25 @@ def get_total_orders():
 
 #Get Total Products
 @app.route('/api/total_products', methods=['GET'])
-@jwt_required()
 def get_total_products():
     products = Products.query.all()
     total_products = len(products)
 
     return jsonify({'total_products': total_products}), 200
 
+#Get Top Selling Products
+@app.route('/api/top_selling_products', methods=['GET'])    
+def get_top_selling_products():
+    products = Products.query.all()
+    top_selling_products = [
+        {
+            "product_id": product.product_id,
+            "product_name": product.product_name,
+            "price": product.price,
+            "category": product.category
+        } for product in products]
+
+    return jsonify(top_selling_products), 200
 
 
 if __name__ == '__main__':
