@@ -81,6 +81,7 @@ class Users(db.Model):
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
+    user_id = data.get('user_id')
     username = data.get('username')
     password = data.get('password')
     role = data.get('role')
@@ -108,12 +109,21 @@ def login():
     else:
         return jsonify({'message': 'Invalid username or password'}), 401
 
-@app.route('/api/products', methods=['GET'])
+#Get all users
+@app.route('/api/users', methods=['GET'])
 @jwt_required()
-def get_products():
-    products = Product.query.all()
-    result = [{'id': product.id, 'name': product.name, 'price': str(product.price), 'category': product.category} for product in products]
-    return jsonify(result), 200
+def get_users():
+    users = Users.query.all()
+    results = [
+        {
+            "user_id": user.user_id,
+            "username": user.username,
+            "password": user.password,
+            "role": user.role
+        } for user in users]
+
+    return jsonify(results), 200
+
 
 
 if __name__ == '__main__':
