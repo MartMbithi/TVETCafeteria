@@ -626,6 +626,16 @@ def update_order(order_id):
 
 
 #Delete Order
+@app.route('/api/orders/<int:order_id>', methods=['DELETE'])
+@jwt_required()
+def delete_order(order_id):
+    order = Orders.query.get_or_404(order_id)
+    db.session.delete(order)
+    db.session.commit()
+
+    return jsonify({'message': 'Order deleted successfully!'}), 200
+
+
 
 #Landing Page Analytics
 
