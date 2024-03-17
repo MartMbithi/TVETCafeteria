@@ -25,9 +25,28 @@ class Cafeteria(db.Model):
     cafeteria_id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.String(100))
     cafeteria_name = db.Column(db.String(100))
+
 # Digital Center Model
+class DigitalCenter(db.Model):
+    digital_center_id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.String(100))
+    digital_center_name = db.Column(db.String(100))
+
+
 # Locations Model
+class Locations(db.Model):
+    location_id = db.Column(db.Integer, primary_key=True)
+    location_name = db.Column(db.String(100))
+
 # Orders Model
+class Orders(db.Model):
+    order_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    product_id = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+    total = db.Column(db.Float)
+    order_date = db.Column(db.DateTime)
+    
 # Pharmacy Model
 # Product Model
 # Tuck_shop Model
