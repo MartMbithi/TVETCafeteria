@@ -327,13 +327,61 @@ def delete_cafeteria(cafeteria_id):
 #Digital Center CRUD Operations
 
 #Add Digital Center
+@app.route('/api/digital_centers', methods=['POST'])
+@jwt_required()
+def create_digital_center():
+    data = request.json
+    digital_center_id = data.get('digital_center_id')
+    location_id = data.get('location_id')
+    digital_center_name = data.get('digital_center_name')
+
+    digital_center = DigitalCenter(digital_center_id=digital_center_id, location_id=location_id, digital_center_name=digital_center_name)
+    db.session.add(digital_center)
+    db.session.commit()
+
+    return jsonify({'message': 'Digital Center created successfully!'}), 201
+
 
 
 #Get List Of Digital Centers
+@app.route('/api/digital_centers', methods=['GET'])
+@jwt_required()
+def get_digital_centers():
+    digital_centers = DigitalCenter.query.all()
+    results = [
+        {
+            "digital_center_id": digital_center.digital_center_id,
+            "location_id": digital_center.location_id,
+            "digital_center_name": digital_center.digital_center_name
+        } for digital_center in digital_centers]
+
+    return jsonify(results), 200
+
 
 #Update Digital Center
+@app.route('/api/digital_centers/<int:digital_center_id>', methods=['PUT'])
+@jwt_required()
+def update_digital_center(digital_center_id):
+    data = request.json
+    digital_center = DigitalCenter.query.get_or_404(digital_center_id)
+
+    digital_center.location_id = data.get('location_id')
+    digital_center.digital_center_name = data.get('digital_center_name')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Digital Center updated successfully!'}), 200
 
 #Delete Digital Center
+@app.route('/api/digital_centers/<int:digital_center_id>', methods=['DELETE'])
+@jwt_required()
+def delete_digital_center(digital_center_id):
+    digital_center = DigitalCenter.query.get_or_404(digital_center_id)
+    db.session.delete(digital_center)
+    db.session.commit()
+
+    return jsonify({'message': 'Digital Center deleted successfully!'}), 200
+
 
 
 #Pharmacy CRUD Operations
