@@ -1,0 +1,1217 @@
+{
+	"info": {
+		"_postman_id": "2d42d6d2-ce75-486f-aa15-b183dfd418e1",
+		"name": "TVET College Application Project API End Points",
+		"description": "A local TVET college looks to expand its entrepreneurial activities within its 5 locations around Machakos County. As part of its innovative strategy, the college seeks to have an online presence with an ecommerce web app. This will allow students, staff and guests to access services and products available to the college cafeteria, tuck shops, pharmacy, bookshop and digital center.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "7416580"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Username is unique\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Password is strong\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.have.lengthOf.at.least(1, \"Password should be strong\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"user_id\": 8,\r\n    \"username\": \"\",\r\n    \"password\" : \"TestPassword20\",\r\n    \"role\": \"Staff\"\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/register",
+						"description": "The Register User endpoint allows new users to create an account within the TVET college ecommerce application. Users can register by providing a unique username, a strong password, and specifying their role (e.g.,student, staff, or guest). Upon successful registration, the user will  \nbe able to access the application's features and functionalities."
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.access_token).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Access token should be a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.access_token).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is set to application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.equal('application/json');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"James Monroe\",\r\n    \"password\": \"TestPassword20\",\r\n    \"role\" : \"Staff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Read Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    ",
+									"    responseData.forEach(function(user) {",
+									"        pm.expect(user).to.have.property('role');",
+									"        pm.expect(user).to.have.property('user_id');",
+									"        pm.expect(user).to.have.property('username');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Role is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function (user) {",
+									"        pm.expect(user.role).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Role should not be empty\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"User_id is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(user){",
+									"        pm.expect(user.user_id).to.be.a('number').and.to.be.at.least(0);",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Username is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+									"    responseData.forEach(function(user){",
+									"        pm.expect(user.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"Jane_Smith\",\r\n    \"password\":\"Test125\",\r\n    \"role\":\"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/users/11"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required field 'message'\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"The 'message' field is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"The 'message' field contains the expected value\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.equal(\"Expected value\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is set to application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/users/13"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "Register Location",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\": \"5\",\r\n    \"location_name\": \"Mumbuni - Along Machakos Kangundo Road\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/locations"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has required fields - location_id and location_name\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').and.to.have.lengthOf.at.least(1, \"Array should not be empty\");",
+									"  ",
+									"    responseData.forEach(function(location) {",
+									"        pm.expect(location).to.have.property('location_id');",
+									"        pm.expect(location).to.have.property('location_name');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Location_id is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    responseData.forEach(function(location) {",
+									"        pm.expect(location.location_id).to.be.a('number').and.to.be.at.least(0);",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Location_name is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"    responseData.forEach(function(location) {",
+									"        pm.expect(location.location_name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/locations"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate content type is 'application/json'\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'message' field is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate that the 'message' field is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Location with ID 2 has been successfully updated\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an(\"object\");",
+									"    pm.expect(responseData.message).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_name\" : \"Katheka Kai Along Machakos Nairobi Road\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/locations/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Location",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/locations/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookshop",
+			"item": [
+				{
+					"name": "Register Bookshops",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookshop_id\" : \"3\",\r\n    \"location_id\" : \"2\",\r\n    \"bookshop_name\" : \"Twiga Tertiary Learners Bookshop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/bookshops"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bookshops",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+									"  ",
+									"  responseData.forEach(function(bookshop) {",
+									"    pm.expect(bookshop.bookshop_id).to.exist.and.to.be.a('number');",
+									"    pm.expect(bookshop.bookshop_name).to.exist.and.to.be.a('string');",
+									"    pm.expect(bookshop.location_id).to.exist.and.to.be.a('number');",
+									"  });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Bookshop name is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.forEach(function(bookshop) {",
+									"        pm.expect(bookshop.bookshop_name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Bookshop name should not be empty\");",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Location ID is a positive integer\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array');",
+									"  ",
+									"  responseData.forEach(function (bookshop) {",
+									"    pm.expect(bookshop.location_id).to.be.a('number').and.to.be.above(0);",
+									"  });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/bookshops"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bookshop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\" : \"5\",\r\n    \"bookshop_name\" : \"Twiga Junior Learners Bookshop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/bookshops/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Bookshop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/bookshops/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cafeteria",
+			"item": [
+				{
+					"name": "Add Cafeteria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cafeteria_id\" : \"4\",\r\n    \"location_id\" : \"3\",\r\n    \"cafeteria_name\" : \"TVET Mess Four\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/cafeterias"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cafeterias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/cafeterias"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Cafeteria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\" : \"3\",\r\n    \"cafeteria_name\" : \"TVET Fast Foods\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/cafeterias/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/cafeterias/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Digital Centers",
+			"item": [
+				{
+					"name": "Add Digital Centers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"digital_center_id\" : \"5\",\r\n    \"location_id\" : \"5\",\r\n    \"digital_center_name\" : \"TVET Medical Trainees Center\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/digital_centers"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Centers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/digital_centers"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Centers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\" : \"2\",\r\n    \"digital_center_name\" : \"TVET Students Cyber Cafe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/digital_centers/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Center",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/digital_centers/4"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pharmacies",
+			"item": [
+				{
+					"name": "Add Pharmacy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pharmacy_id\" : \"3\",\r\n    \"location_id\" : \"4\",\r\n    \"pharmacy_name\" : \"TVET Informary 003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/pharmacies"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pharmacies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/pharmacies"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pharmacies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\" : \"3\",\r\n    \"pharmacy_name\" : \"New TVET Informary\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/pharmacies/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pharmacy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/pharmacies/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Add Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\" : \"4\",\r\n    \"location_id\" : \"2\",\r\n    \"product_name\" : \"Brufen BP 500MG\",\r\n    \"price\" : \"2500\",\r\n    \"category\" : \"Pharmaceuticals\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/products"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/products"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\" : \"3\",\r\n    \"product_name\" : \"Malaria Tablets\",\r\n    \"price\" : \"4500\",\r\n    \"category\": \"Pharmaceuticals\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/products/1"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/products/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tuck Shop",
+			"item": [
+				{
+					"name": "Add Tuckshop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tuck_shop_id\" : \"4\",\r\n    \"location_id\" : \"4\",\r\n    \"tuck_shop_name\" : \"TVET Green Groceries Mini Mart\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/tuck_shops"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tuckshops",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/tuck_shops"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tuckshop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_id\" : \"2\",\r\n    \"tuck_shop_name\" : \"TVET Green Groceries Mini Mart\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/tuck_shops/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tuckshop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/tuck_shops/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Add Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order_id\" : \"4\",\r\n    \"user_id\" : \"5\",\r\n    \"product_id\" : \"4\",\r\n    \"quantity\" : \"1\",\r\n    \"total\" : \"2500\",\r\n    \"order_date\": \"03/17/2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\" : \"5\",\r\n    \"product_id\" : \"4\",\r\n    \"quantity\" : \"1\",\r\n    \"total\" : \"2500\",\r\n    \"order_date\": \"3/17/2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/orders/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxMDY2OTM4NCwianRpIjoiNWYzYzE5NjctODAyNC00YWZjLWI1NjAtYjc3YzAxMzU5Yzc1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MTAsIm5iZiI6MTcxMDY2OTM4NCwiY3NyZiI6IjhlODhiOTgzLWZiMzQtNGM4YS1iNGQ5LTQ0MGYyODBlMWJmOCIsImV4cCI6MTcxMDc1NTc4NH0.yv2pQXvGWGt-t6RJtIuPc0wIC3Mt0AwzuP8K-KPNzWo"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/orders/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard Analytics",
+			"item": [
+				{
+					"name": "Revenue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/sales"
+					},
+					"response": []
+				},
+				{
+					"name": "Total Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/all_orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Total Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:5000/api/total_products"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "jwt",
+		"jwt": {
+			"algorithm": "HS256",
+			"isSecretBase64Encoded": false,
+			"payload": "{}",
+			"addTokenTo": "header",
+			"headerPrefix": "Bearer",
+			"queryParamKey": "token",
+			"header": "{}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
