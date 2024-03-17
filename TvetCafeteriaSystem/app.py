@@ -207,13 +207,59 @@ def delete_location(location_id):
 #Bookshop CRUD Operations
 
 #Add Bookshop
+@app.route('/api/bookshops', methods=['POST'])
+@jwt_required()
+def create_bookshop():
+    data = request.json
+    bookshop_id = data.get('bookshop_id')
+    location_id = data.get('location_id')
+    bookshop_name = data.get('bookshop_name')
+
+    bookshop = Bookshop(bookshop_id=bookshop_id, location_id=location_id, bookshop_name=bookshop_name)
+    db.session.add(bookshop)
+    db.session.commit()
+
+    return jsonify({'message': 'Bookshop created successfully!'}), 201
 
 #Get List Of Bookshops
+@app.route('/api/bookshops', methods=['GET'])
+@jwt_required()
+def get_bookshops():
+    bookshops = Bookshop.query.all()
+    results = [
+        {
+            "bookshop_id": bookshop.bookshop_id,
+            "location_id": bookshop.location_id,
+            "bookshop_name": bookshop.bookshop_name
+        } for bookshop in bookshops]
+
+    return jsonify(results), 200
+
 
 #Update Bookshop
+@app.route('/api/bookshops/<int:bookshop_id>', methods=['PUT'])
+@jwt_required()
+def update_bookshop(bookshop_id):
+    data = request.json
+    bookshop = Bookshop.query.get_or_404(bookshop_id)
+
+    bookshop.location_id = data.get('location_id')
+    bookshop.bookshop_name = data.get('bookshop_name')
+
+    db.session.commit()
+
+    return jsonify({'message': 'Bookshop updated successfully!'}), 200
+
 
 #Delete Bookshop
+@app.route('/api/bookshops/<int:bookshop_id>', methods=['DELETE'])
+@jwt_required()
+def delete_bookshop(bookshop_id):
+    bookshop = Bookshop.query.get_or_404(bookshop_id)
+    db.session.delete(bookshop)
+    db.session.commit()
 
+    return jsonify({'message': 'Bookshop deleted successfully!'}), 200
 
 
 
